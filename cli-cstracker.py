@@ -1,0 +1,63 @@
+import argparse
+import json
+mappool = ["Ancient", "Anubis", "Inferno", "Mirage", "Nuke", "Overpass", "Vertigo"]
+
+def cmd_add(args):
+    matches = load_matches()
+    match = {
+        "map": args.map,
+        "kills": args.kills,
+        "deaths": args.deaths,
+        "rounds_won": args.rounds_won,
+        "rounds_lost": args.rounds_lost,
+    }
+    matches.append(match)
+    save_matches(matches)
+    print(f"Saved: {args.map} ({args.kills}/{args.deaths})")
+
+def cmd_list(args):
+    matches = load_matches()
+    for match in matches:
+        print(f"{match['map']} {match['kills']}/{match['deaths']} {match['rounds_won']} - {match['rounds_lost']}")
+
+def cmd_stats(args):
+    print("TODO: show stats")
+
+def load_matches():
+    try:
+        with open("matches.json", "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+    
+def save_matches(matches):
+    with open("matches.json", "w") as f:
+        json.dump(matches, f, indent=2)
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="cstrack",
+        description="record and analyze your CS matches."
+    )
+
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    add_parser = subparsers.add_parser("add", help="record a new match")
+    add_parser.add_argument("--map", choices=mappool, required=True, help="map played")
+    add_parser.add_argument("--kills", type=int, required=True, help="kills per match")
+    add_parser.add_argument("--deaths", type=int, required=True,help="deaths per match" )
+    add_parser.add_argument("--rounds-won", type=int, required=True, help="rounds won per match")
+    add_parser.add_argument("--rounds-lost", type=int, required=True, help="rounds lost per match")
+    add_parser.set_defaults(func=cmd_add)
+
+    list_parser = subparsers.add_parser("list", help="list recorded matches")
+    list_parser.set_defaults(func=cmd_list)
+
+    stats_parser = subparsers.add_parser("stats",help="show aggregate stats")
+    stats_parser.set_defaults(func=cmd_stats)
+
+    args = parser.parse_args()
+    args.func(args)
+
+if __name__ == "__main__":
+    main()
