@@ -12,13 +12,13 @@ Within this repo, is the python code for a CLI that will take the stats of your 
 
 # Usage:
   1. To record a match:
-     python cli-cstracker.py add --map Mirage --kills 20 --deaths 20 --rounds-won 13 --rounds_lost 3
+     - python cli-cstracker.py add --map Mirage --kills 20 --deaths 20 --rounds-won 13 --rounds_lost 3
      
   2. List all recorded matches
-     python cli-cstracker.py list
+     - python cli-cstracker.py list
      
   3. Show aggregate stats
-     python cli-cstracker.py stats
+     - python cli-cstracker.py stats
 
   To see full list of options for the CLI:
     python cli-cstracker.py --help
