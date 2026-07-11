@@ -21,7 +21,31 @@ def cmd_list(args):
         print(f"{match['map']} {match['kills']}/{match['deaths']} {match['rounds_won']} - {match['rounds_lost']}")
 
 def cmd_stats(args):
-    print("TODO: show stats")
+    matches = load_matches()
+    if not matches:
+        print("No matches recorded yet.")
+        return
+    total_kills = 0
+    total_deaths = 0
+    wins = 0 
+
+    for match in matches:
+        total_kills += match['kills']
+        total_deaths += match['deaths']
+        if match['rounds_won']>match['rounds_lost']:
+            wins += 1
+
+    total_matches = len(matches)
+    kd = total_kills / total_deaths
+    win_rate = wins / total_matches * 100
+    if total_deaths == 0:
+        kd = total_kills
+    else:
+        kd = total_kills / total_deaths
+
+    print(f"Matches: {total_matches}")
+    print(f"K/D: {kd:.2f}")
+    print(f"Win rate: {win_rate:.1f}%")
 
 def load_matches():
     try:
