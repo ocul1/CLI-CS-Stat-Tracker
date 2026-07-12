@@ -36,7 +36,6 @@ def cmd_stats(args):
             wins += 1
 
     total_matches = len(matches)
-    kd = total_kills / total_deaths
     win_rate = wins / total_matches * 100
     if total_deaths == 0:
         kd = total_kills
