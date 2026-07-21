@@ -1,5 +1,7 @@
+import os
 import argparse
 import json
+DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),"matches.json")
 mappool = ["Ancient", "Anubis", "Inferno", "Mirage", "Nuke", "Overpass", "Vertigo"]
 
 def cmd_add(args):
@@ -48,13 +50,13 @@ def cmd_stats(args):
 
 def load_matches():
     try:
-        with open("matches.json", "r") as f:
+        with open(DATA_FILE, "r") as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return []
-    
+
 def save_matches(matches):
-    with open("matches.json", "w") as f:
+    with open(DATA_FILE, "w") as f:
         json.dump(matches, f, indent=2)
 
 def main():
